@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -64,7 +65,7 @@ public class GreetingsController { // Classe responsável por interceptação do
 
 	}
 
-	// API Salvar
+	// Método Salvar
 	@PostMapping(value = "/salvar") // Mapeia a URL
 	@ResponseBody // Faz a descrição da resposta
 	public ResponseEntity<Usuario> salvar(@RequestBody Usuario usuario) { // Recebe os dados para salvar
@@ -74,9 +75,8 @@ public class GreetingsController { // Classe responsável por interceptação do
 		return new ResponseEntity<Usuario>(user, HttpStatus.CREATED);
 
 	}
-	
-	
-	// API Delete
+
+	// Método Delete
 	@DeleteMapping(value = "/delete") // Mapeia a URL
 	@ResponseBody // Faz a descrição da resposta
 	public ResponseEntity<String> delete(@RequestParam Long iduser) { // Recebe os dados para salvar
@@ -87,5 +87,43 @@ public class GreetingsController { // Classe responsável por interceptação do
 
 	}
 
+	// Método Delete
+	@GetMapping(value = "/buscaruserid") // Mapeia a URL
+	@ResponseBody // Faz a descrição da resposta
+	public ResponseEntity<Usuario> buscaruserid(@RequestParam(name = "iduser") Long iduser) { // Recebe os dados para
+																								// salvar
+
+		Usuario usuario = usuarioRepository.findById(iduser).get();
+
+		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
+
+	}
+
+	// Método Salvar
+	@PutMapping(value = "/atualizar") // Mapeia a URL
+	@ResponseBody // Faz a descrição da resposta
+	public ResponseEntity<?> atualizar(@RequestBody Usuario usuario) { // Recebe os dados para salvar
+
+		if (usuario.getId() == null) {
+			return new ResponseEntity<String>("Id não foi informado para atualização", HttpStatus.OK);
+		} else {
+
+			Usuario user = usuarioRepository.saveAndFlush(usuario);
+
+			return new ResponseEntity<Usuario>(user, HttpStatus.OK);
+		}
+
+	}
+
+	// Método busca personalizada
+	@GetMapping(value = "/buscarPorNome") // Mapeia a URL
+	@ResponseBody // Faz a descrição da resposta
+	public ResponseEntity<List<Usuario>> buscarPorNome(@RequestParam(name = "name") String name) { // Recebe os dados
+																										// para salvar
+		List<Usuario> usuario = usuarioRepository.buscarPorNome(name.trim().toUpperCase()); // trim e upperCase na interface tbm
+
+		return new ResponseEntity<List<Usuario>>(usuario, HttpStatus.OK);
+
+	}
 
 }
