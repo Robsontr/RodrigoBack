@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,6 +56,9 @@ public class GreetingsController { // Classe responsável por interceptação do
 
 	}
 
+	// -------------------------------------------------------------------------------------------------
+
+	// Lista todos os dados do Banco
 	@GetMapping(value = "listatodos") // Primeiro método de API (método buscar todos)
 	@ResponseBody // Retorna os dados para o corpo da resposta (vai retornar um JSON)
 	public ResponseEntity<List<Usuario>> listaUsuarios() {
@@ -65,9 +69,12 @@ public class GreetingsController { // Classe responsável por interceptação do
 
 	}
 
+	// -------------------------------------------------------------------------------------------------
+
 	// Método Salvar
 	@PostMapping(value = "/salvar") // Mapeia a URL
 	@ResponseBody // Faz a descrição da resposta
+	@CrossOrigin(origins = "http://localhost:4200")
 	public ResponseEntity<Usuario> salvar(@RequestBody Usuario usuario) { // Recebe os dados para salvar
 
 		Usuario user = usuarioRepository.save(usuario);
@@ -75,6 +82,8 @@ public class GreetingsController { // Classe responsável por interceptação do
 		return new ResponseEntity<Usuario>(user, HttpStatus.CREATED);
 
 	}
+
+	// -------------------------------------------------------------------------------------------------
 
 	// Método Delete
 	@DeleteMapping(value = "/delete") // Mapeia a URL
@@ -87,7 +96,9 @@ public class GreetingsController { // Classe responsável por interceptação do
 
 	}
 
-	// Método Delete
+	// -------------------------------------------------------------------------------------------------
+
+	// Método Buscar por id
 	@GetMapping(value = "/buscaruserid") // Mapeia a URL
 	@ResponseBody // Faz a descrição da resposta
 	public ResponseEntity<Usuario> buscaruserid(@RequestParam(name = "iduser") Long iduser) { // Recebe os dados para
@@ -99,7 +110,9 @@ public class GreetingsController { // Classe responsável por interceptação do
 
 	}
 
-	// Método Salvar
+	// -------------------------------------------------------------------------------------------------
+
+	// Método Atualizar
 	@PutMapping(value = "/atualizar") // Mapeia a URL
 	@ResponseBody // Faz a descrição da resposta
 	public ResponseEntity<?> atualizar(@RequestBody Usuario usuario) { // Recebe os dados para salvar
@@ -115,12 +128,15 @@ public class GreetingsController { // Classe responsável por interceptação do
 
 	}
 
+	// -------------------------------------------------------------------------------------------------
+
 	// Método busca personalizada
 	@GetMapping(value = "/buscarPorNome") // Mapeia a URL
 	@ResponseBody // Faz a descrição da resposta
 	public ResponseEntity<List<Usuario>> buscarPorNome(@RequestParam(name = "name") String name) { // Recebe os dados
-																										// para salvar
-		List<Usuario> usuario = usuarioRepository.buscarPorNome(name.trim().toUpperCase()); // trim e upperCase na interface tbm
+																									// para salvar
+		List<Usuario> usuario = usuarioRepository.buscarPorNome(name.trim().toUpperCase()); // trim e upperCase na
+																							// interface tbm
 
 		return new ResponseEntity<List<Usuario>>(usuario, HttpStatus.OK);
 
