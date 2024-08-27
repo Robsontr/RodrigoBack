@@ -6,12 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import br.com.springboot.curso_jdev_treinamento.model.Usuario;
+import br.com.springboot.curso_jdev_treinamento.model.Membros;
 
 @Repository
-public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+public interface UsuarioRepository extends JpaRepository<Membros, Long> {
 	
-	@Query(value = "select u from Usuario u where upper(trim(u.nome)) like %?1%") // trim() tira espaço e upper() ignora maiúsculas e minúsculas
-	List<Usuario> buscarPorNome(String nome);
+	@Query(value = "select m from Membros m where upper(trim(m.nome)) like %?1%") // trim() tira espaço e upper() ignora maiúsculas e minúsculas
+	List<Membros> buscarPorNome(String nome);
 
 }

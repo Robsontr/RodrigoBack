@@ -81,12 +81,13 @@
       <scope>test</scope>
     </dependency>
     
-    <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
-<dependency>
+    <dependency>
     <groupId>org.postgresql</groupId>
     <artifactId>postgresql</artifactId>
-    <version>42.3.6</version>
+    <version>42.6.0</version> <!-- Verifique se há uma versão mais recente -->
 </dependency>
+
+
     
   </dependencies>
 

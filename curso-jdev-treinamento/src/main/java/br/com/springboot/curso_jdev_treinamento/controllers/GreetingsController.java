@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.springboot.curso_jdev_treinamento.model.Usuario;
+import br.com.springboot.curso_jdev_treinamento.model.Membros;
 import br.com.springboot.curso_jdev_treinamento.repository.UsuarioRepository;
 
 /**
@@ -47,10 +46,10 @@ public class GreetingsController { // Classe responsável por interceptação do
 	@ResponseStatus(HttpStatus.OK)
 	public String retornaOlaMundo(@PathVariable String nome) { // Pega o nome digitado na URL
 
-		Usuario usuario = new Usuario();
-		usuario.setNome(nome); // Nome Digitado na URL
+		Membros membros = new Membros();
+		membros.setNome(nome); // Nome Digitado na URL
 
-		usuarioRepository.save(usuario); // Gravar no banco de dados
+		usuarioRepository.save(membros); // Gravar no banco de dados
 
 		return "Olá mundo " + nome;
 
@@ -61,11 +60,11 @@ public class GreetingsController { // Classe responsável por interceptação do
 	// Lista todos os dados do Banco
 	@GetMapping(value = "listatodos") // Primeiro método de API (método buscar todos)
 	@ResponseBody // Retorna os dados para o corpo da resposta (vai retornar um JSON)
-	public ResponseEntity<List<Usuario>> listaUsuarios() {
+	public ResponseEntity<List<Membros>> listaUsuarios() {
 
-		List<Usuario> usuarios = usuarioRepository.findAll(); // Executa a consulta no banco de dados
+		List<Membros> usuarios = usuarioRepository.findAll(); // Executa a consulta no banco de dados
 
-		return new ResponseEntity<List<Usuario>>(usuarios, HttpStatus.OK);
+		return new ResponseEntity<List<Membros>>(usuarios, HttpStatus.OK);
 
 	}
 
@@ -74,12 +73,11 @@ public class GreetingsController { // Classe responsável por interceptação do
 	// Método Salvar
 	@PostMapping(value = "/salvar") // Mapeia a URL
 	@ResponseBody // Faz a descrição da resposta
-	@CrossOrigin(origins = "http://localhost:4200")
-	public ResponseEntity<Usuario> salvar(@RequestBody Usuario usuario) { // Recebe os dados para salvar
+	public ResponseEntity<Membros> salvar(@RequestBody Membros usuario) { // Recebe os dados para salvar
 
-		Usuario user = usuarioRepository.save(usuario);
+		Membros user = usuarioRepository.save(usuario);
 
-		return new ResponseEntity<Usuario>(user, HttpStatus.CREATED);
+		return new ResponseEntity<Membros>(user, HttpStatus.CREATED);
 
 	}
 
@@ -101,12 +99,12 @@ public class GreetingsController { // Classe responsável por interceptação do
 	// Método Buscar por id
 	@GetMapping(value = "/buscaruserid") // Mapeia a URL
 	@ResponseBody // Faz a descrição da resposta
-	public ResponseEntity<Usuario> buscaruserid(@RequestParam(name = "iduser") Long iduser) { // Recebe os dados para
+	public ResponseEntity<Membros> buscaruserid(@RequestParam(name = "iduser") Long iduser) { // Recebe os dados para
 																								// salvar
 
-		Usuario usuario = usuarioRepository.findById(iduser).get();
+		Membros membros = usuarioRepository.findById(iduser).get();
 
-		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
+		return new ResponseEntity<Membros>(membros, HttpStatus.OK);
 
 	}
 
@@ -115,15 +113,15 @@ public class GreetingsController { // Classe responsável por interceptação do
 	// Método Atualizar
 	@PutMapping(value = "/atualizar") // Mapeia a URL
 	@ResponseBody // Faz a descrição da resposta
-	public ResponseEntity<?> atualizar(@RequestBody Usuario usuario) { // Recebe os dados para salvar
+	public ResponseEntity<?> atualizar(@RequestBody Membros membros) { // Recebe os dados para salvar
 
-		if (usuario.getId() == null) {
+		if (membros.getId() == null) {
 			return new ResponseEntity<String>("Id não foi informado para atualização", HttpStatus.OK);
 		} else {
 
-			Usuario user = usuarioRepository.saveAndFlush(usuario);
+			Membros membrosIns = usuarioRepository.saveAndFlush(membros);
 
-			return new ResponseEntity<Usuario>(user, HttpStatus.OK);
+			return new ResponseEntity<Membros>(membrosIns, HttpStatus.OK);
 		}
 
 	}
@@ -133,12 +131,12 @@ public class GreetingsController { // Classe responsável por interceptação do
 	// Método busca personalizada
 	@GetMapping(value = "/buscarPorNome") // Mapeia a URL
 	@ResponseBody // Faz a descrição da resposta
-	public ResponseEntity<List<Usuario>> buscarPorNome(@RequestParam(name = "name") String name) { // Recebe os dados
+	public ResponseEntity<List<Membros>> buscarPorNome(@RequestParam(name = "name") String name) { // Recebe os dados
 																									// para salvar
-		List<Usuario> usuario = usuarioRepository.buscarPorNome(name.trim().toUpperCase()); // trim e upperCase na
+		List<Membros> membros = usuarioRepository.buscarPorNome(name.trim().toUpperCase()); // trim e upperCase na
 																							// interface tbm
 
-		return new ResponseEntity<List<Usuario>>(usuario, HttpStatus.OK);
+		return new ResponseEntity<List<Membros>>(membros, HttpStatus.OK);
 
 	}
 
