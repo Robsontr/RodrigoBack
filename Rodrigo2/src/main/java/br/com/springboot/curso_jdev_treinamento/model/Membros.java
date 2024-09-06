@@ -1,6 +1,7 @@
 package br.com.springboot.curso_jdev_treinamento.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +21,7 @@ public class Membros implements Serializable {
 
 	private String nome;
 
-	private int idade;
+	private LocalDate dataNasc;
 
 	public Long getId() {
 		return id;
@@ -38,12 +39,14 @@ public class Membros implements Serializable {
 		this.nome = nome;
 	}
 
-	public int getIdade() {
-		return idade;
+	public LocalDate getDataNasc() {
+		return dataNasc;
 	}
 
-	public void setIdade(int idade) {
-		this.idade = idade;
+	public void setDataNasc(LocalDate dataNasc) {
+		this.dataNasc = dataNasc;
 	}
+	
+	
 
 }
