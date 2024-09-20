@@ -31,46 +31,46 @@ public class Utilidades {
 		});
 		return membros;
 	}
-	
+
 	// Aniversariantes do mês
-		public List niverMes(List<MembrosDTO> lista) {
+	public List niverMes(List<MembrosDTO> lista) {
 
-			Month mesAtual = LocalDate.now().getMonth();
+		Month mesAtual = LocalDate.now().getMonth();
 
-			List<MembrosDTO> aniversariantes = lista.stream()
-			    .filter(usuario -> {
-				LocalDate dataNasc = LocalDate.parse(usuario.getDataNasc(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-				return dataNasc.getMonth() == mesAtual;
-			}).collect(Collectors.toList());
+		List<MembrosDTO> aniversariantes = lista.stream().filter(usuario -> {
+			LocalDate dataNasc = LocalDate.parse(usuario.getDataNasc(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+			return dataNasc.getMonth() == mesAtual;
+		}).collect(Collectors.toList());
 
-			return aniversariantes;
-		}
-		
-		// Aniversariantes do mês posterior
-			public List niverMesPos(List<MembrosDTO> lista) {
+		return aniversariantes;
+	}
 
-				Month mesAtual = LocalDate.now().getMonth();
+	// Aniversariantes do mês posterior
+	public List niverMesPos(List<MembrosDTO> lista) {
 
-				List<MembrosDTO> aniversariantes = lista.stream()
-				    .filter(usuario -> {
-					LocalDate dataNasc = LocalDate.parse(usuario.getDataNasc(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-					return dataNasc.getMonth() == mesAtual.plus(1);
-				}).collect(Collectors.toList());
+		Month mesAtual = LocalDate.now().getMonth();
 
-				return aniversariantes;
-			}
-			
-			// Mês atual
-			public String mesAtual() {
-		        LocalDate hoje = LocalDate.now();
-		        Month mes = hoje.getMonth();
-		        return mes.getDisplayName(TextStyle.FULL, new Locale("pt", "BR"));
-		    }
-			
-			// Mês a mais
-				public String mesAtualPos() {
-			        LocalDate hoje = LocalDate.now();
-			        Month mes = hoje.getMonth().plus(1);
-			        return mes.getDisplayName(TextStyle.FULL, new Locale("pt", "BR"));
-			    }
+		List<MembrosDTO> aniversariantes = lista.stream().filter(usuario -> {
+			LocalDate dataNasc = LocalDate.parse(usuario.getDataNasc(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+			return dataNasc.getMonth() == mesAtual.plus(1);
+		}).collect(Collectors.toList());
+
+		return aniversariantes;
+	}
+
+	// Mês atual
+	public String mesAtual() {
+		LocalDate hoje = LocalDate.now();
+		Month mes = hoje.getMonth();
+		String mesMaiusculo = mes.getDisplayName(TextStyle.FULL, new Locale("pt", "BR"));
+		return mesMaiusculo.substring(0, 1).toUpperCase() + mesMaiusculo.substring(1);
+	}
+
+	// Mês a seguinte
+	public String mesAtualPos() {
+		LocalDate hoje = LocalDate.now();
+		Month mes = hoje.getMonth().plus(1);
+		String mesMaiusculo = mes.getDisplayName(TextStyle.FULL, new Locale("pt", "BR"));
+		return mesMaiusculo.substring(0, 1).toUpperCase() + mesMaiusculo.substring(1);
+	}
 }

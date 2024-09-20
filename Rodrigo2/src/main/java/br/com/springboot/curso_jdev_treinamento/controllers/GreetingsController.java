@@ -21,13 +21,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.springboot.curso_jdev_treinamento.model.Conta;
+import br.com.springboot.curso_jdev_treinamento.model.Historico;
 import br.com.springboot.curso_jdev_treinamento.model.Membros;
 import br.com.springboot.curso_jdev_treinamento.model.MembrosDTO;
 import br.com.springboot.curso_jdev_treinamento.model.Mes;
 import br.com.springboot.curso_jdev_treinamento.repository.ContaRepository;
+import br.com.springboot.curso_jdev_treinamento.repository.HistoricoRepository;
 import br.com.springboot.curso_jdev_treinamento.repository.UsuarioRepository;
 import br.com.springboot.curso_jdev_treinamento.utilidades.Utilidades;
-
 
 /**
  *
@@ -41,9 +42,12 @@ public class GreetingsController { // Classe responsável por interceptação do
 
 	@Autowired
 	private ContaRepository contaRepository;
-	
+
 	@Autowired
 	private Utilidades utilidades;
+
+	@Autowired
+	private HistoricoRepository historicoRepository;
 
 	/**
 	 *
@@ -84,96 +88,92 @@ public class GreetingsController { // Classe responsável por interceptação do
 
 	// -------------------------------------------------------------------------------------------------
 
+	// Método Salvar
+	@PostMapping(value = "/historico") // Mapeia a URL
+	@ResponseBody // Faz a descrição da resposta
+	public ResponseEntity<Historico> salvarHistorico(@RequestBody Historico hist) { // Recebe os dados para salvar
+
+		Historico historico = historicoRepository.save(hist);
+
+		return new ResponseEntity<Historico>(historico, HttpStatus.CREATED);
+
+	}
+
+	// --------------------------------------------------------------------------------------------------
+
 	// Lista todos os dados do Banco em ordem alfabética
 	@GetMapping(value = "/listatodos") // Primeiro método de API (método buscar todos)
 	@ResponseBody // Retorna os dados para o corpo da resposta (vai retornar um JSON)
 	public ResponseEntity<List<MembrosDTO>> listaUsuarios() {
 
 		List<Membros> listaM = usuarioRepository.findAll(); // Executa a consulta no banco de dados
-	
-		List<MembrosDTO> listaDTO = listaM.stream()
-				.map(membros -> new MembrosDTO (
-						membros.getId(),
-						membros.getNome(),
-						utilidades.dataFormater(membros.getDataNasc())
-						))
-				.collect(Collectors.toList());
-				
+
+		List<MembrosDTO> listaDTO = listaM.stream().map(membros -> new MembrosDTO(membros.getId(), membros.getNome(),
+				utilidades.dataFormater(membros.getDataNasc()))).collect(Collectors.toList());
+
 		listaDTO = utilidades.ordenacao(listaDTO);
-	
+
 		return new ResponseEntity<List<MembrosDTO>>(listaDTO, HttpStatus.OK);
 
 	}
-	
-	//--------------------------------------------------------------------------------------------------
-	
-	//Lista Aniversarios do mês
+
+	// --------------------------------------------------------------------------------------------------
+
+	// Lista Aniversarios do mês
 	@GetMapping(value = "/nivermes") // Primeiro método de API (método buscar todos)
 	@ResponseBody // Retorna os dados para o corpo da resposta (vai retornar um JSON)
 	public ResponseEntity<List<MembrosDTO>> listaNiiver() {
 
 		List<Membros> listaM = usuarioRepository.findAll(); // Executa a consulta no banco de dados
-	
-		List<MembrosDTO> listaDTO = listaM.stream()
-				.map(membros -> new MembrosDTO (
-						membros.getId(),
-						membros.getNome(),
-						utilidades.dataFormater(membros.getDataNasc())
-						))
-				.collect(Collectors.toList());
-		
+
+		List<MembrosDTO> listaDTO = listaM.stream().map(membros -> new MembrosDTO(membros.getId(), membros.getNome(),
+				utilidades.dataFormater(membros.getDataNasc()))).collect(Collectors.toList());
+
 		listaDTO = utilidades.ordenacao(listaDTO);
-				
+
 		listaDTO = utilidades.niverMes(listaDTO);
-		
+
 		return new ResponseEntity<List<MembrosDTO>>(listaDTO, HttpStatus.OK);
 
 	}
-	
-	//-----------------------------------------------------------------------------------------------------------------------------------------
-	
-	//Lista Aniversarios do mês após
-		@GetMapping(value = "/nivermespos") // Primeiro método de API (método buscar todos)
-		@ResponseBody // Retorna os dados para o corpo da resposta (vai retornar um JSON)
-		public ResponseEntity<List<MembrosDTO>> listaNiverPos() {
 
-			List<Membros> listaM = usuarioRepository.findAll(); // Executa a consulta no banco de dados
-		
-			List<MembrosDTO> listaDTO = listaM.stream()
-					.map(membros -> new MembrosDTO (
-							membros.getId(),
-							membros.getNome(),
-							utilidades.dataFormater(membros.getDataNasc())
-							))
-					.collect(Collectors.toList());
-			
-			listaDTO = utilidades.ordenacao(listaDTO);
-				
-			listaDTO = utilidades.niverMesPos(listaDTO);
-					
-		
-			return new ResponseEntity<List<MembrosDTO>>(listaDTO, HttpStatus.OK);
+	// -----------------------------------------------------------------------------------------------------------------------------------------
 
-		}
-		
-		//----------------------------------------------------------------------------------------------
-		
-		// Pega o mes atual e o mes seguinte
-		@GetMapping(value = "/mes")
-		@ResponseBody
-		public ResponseEntity<Mes> mesAtualPos() {
-			
-			// Obtem o mês atual
-		    String mesA = utilidades.mesAtual();
-		    String mesB = utilidades.mesAtualPos();
-		    
-		    // Armazena em String o mês atual
-		    Mes mesResponse = new Mes(mesA, mesB);
-		    
-		    
-		    //retorna a String do mês atual
-		    return new ResponseEntity<>(mesResponse, HttpStatus.OK);
-		}
+	// Lista Aniversarios do mês após
+	@GetMapping(value = "/nivermespos") // Primeiro método de API (método buscar todos)
+	@ResponseBody // Retorna os dados para o corpo da resposta (vai retornar um JSON)
+	public ResponseEntity<List<MembrosDTO>> listaNiverPos() {
+
+		List<Membros> listaM = usuarioRepository.findAll(); // Executa a consulta no banco de dados
+
+		List<MembrosDTO> listaDTO = listaM.stream().map(membros -> new MembrosDTO(membros.getId(), membros.getNome(),
+				utilidades.dataFormater(membros.getDataNasc()))).collect(Collectors.toList());
+
+		listaDTO = utilidades.ordenacao(listaDTO);
+
+		listaDTO = utilidades.niverMesPos(listaDTO);
+
+		return new ResponseEntity<List<MembrosDTO>>(listaDTO, HttpStatus.OK);
+
+	}
+
+	// ----------------------------------------------------------------------------------------------
+
+	// Pega o mes atual e o mes seguinte
+	@GetMapping(value = "/mes")
+	@ResponseBody
+	public ResponseEntity<Mes> mesAtualPos() {
+
+		// Obtem o mês atual
+		String mesA = utilidades.mesAtual();
+		String mesB = utilidades.mesAtualPos();
+
+		// Armazena em String o mês atual
+		Mes mesResponse = new Mes(mesA, mesB);
+
+		// retorna a String do mês atual
+		return new ResponseEntity<>(mesResponse, HttpStatus.OK);
+	}
 
 	// -------------------------------------------------------------------------------------------------
 
