@@ -2,6 +2,7 @@ package br.com.springboot.curso_jdev_treinamento.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,8 +39,9 @@ public class Historico {
 		this.id = id;
 	}
 
-	public LocalDateTime getDataTrans() {
-		return dataTrans;
+	public String getDataTrans() {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		return dataTrans.format(dtf); // Retorna a data formatada como String
 	}
 
 	public BigDecimal getValorTrans() {

@@ -99,6 +99,18 @@ public class GreetingsController { // Classe responsável por interceptação do
 
 	}
 
+	// ---------------------------------------------------------------------------------------------------
+
+	// Lista Log
+	@GetMapping(value = "/listalog")
+	@ResponseBody
+	public ResponseEntity<List<Historico>> listaLog() {
+
+		List<Historico> listLog = historicoRepository.findAllByOrderByDataTransDesc();
+
+		return new ResponseEntity<List<Historico>>(listLog, HttpStatus.OK);
+	}
+
 	// --------------------------------------------------------------------------------------------------
 
 	// Lista todos os dados do Banco em ordem alfabética
